@@ -23,7 +23,6 @@ public class Goto {
         clear();
         GamePane gamePane = new GamePane();
         rootPane.getChildren().addAll(gamePane);
-        rootPane.setAlignment(gamePane, Pos.CENTER);
     }
 
     public static void gamepage() {

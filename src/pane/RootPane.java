@@ -12,7 +12,7 @@ public class RootPane extends StackPane{
     private static RootPane instance;
 
     private RootPane() {
-        BackgroundFill backgroundFill = new BackgroundFill(Color.BLACK, null, null);
+        BackgroundFill backgroundFill = new BackgroundFill(Color.WHITE, null, null);
         this.setBackground(new Background(backgroundFill));
         this.setAlignment(Pos.CENTER);
         /////////////////////////
