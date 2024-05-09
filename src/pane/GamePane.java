@@ -7,8 +7,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 
-import static Utils.constant.PlayerConstants.*;
-import static Utils.constant.Directions.*;
+import static Utils.Constant.PlayerConstants.*;
+import static Utils.Constant.Directions.*;
 
 public class GamePane extends Pane {
     private double xPo = 100, yPo = 100;
