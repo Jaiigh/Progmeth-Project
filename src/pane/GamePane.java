@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import main.Game;
 
 import static Utils.Constant.PlayerConstants.*;
 import static Utils.Constant.Directions.*;
@@ -21,9 +22,6 @@ public class GamePane extends Pane {
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
     private double xPo = 100, yPo = 100;
-    private int frames = 0;
-    private long lastCheck = System.currentTimeMillis();
-    private long lastFrame = System.nanoTime();
     private Image img = new Image("player_sprites.png");
     private ImageView[][] animations;
     private ImageView playerImg = new ImageView();
@@ -32,20 +30,14 @@ public class GamePane extends Pane {
     private int playerDirection = -1;
     private boolean moving = false;
     public GamePane() {
-        this.setMinSize(1280, 800);
-        this.setPrefSize(1280, 800);
-        this.setMaxSize(1280, 800);
+        this.setMinSize(Game.GAME_WIDTH, Game.GAME_HEIGHT);
+        this.setPrefSize(Game.GAME_WIDTH, Game.GAME_HEIGHT);
+        this.setMaxSize(Game.GAME_WIDTH, Game.GAME_HEIGHT);
+//        System.out.println("size: " + Game.GAME_WIDTH + " x " + Game.GAME_HEIGHT);
         this.setFocusTraversable(true);
 
         getAnimation();
         getImage();
-
-        new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                GameLoop(now);
-            }
-        }.start();
 
         this.setOnKeyPressed(e -> {
             switch (e.getCode()) {
@@ -155,25 +147,10 @@ public class GamePane extends Pane {
         }
     }
 
-    private void GameLoop(long now) {
-        double elapsedTime = (now - lastFrame) / 1_000_000_000.0;
-
-        if (elapsedTime >= 1.0 / 120) {
-            //update class in game loop
-            updateAnimationTick();
-            getImage();
-            setAnimation();
-            updatePo();
-            lastFrame = now;
-            frames++;
-        }
-
-        if (System.currentTimeMillis() - lastCheck >= 1000) {
-            System.out.println("FPS: " + frames);
-            System.out.println("XPO: " + playerImg.getLayoutX());
-            System.out.println("YPO: " + playerImg.getLayoutY());
-            frames = 0;
-            lastCheck = System.currentTimeMillis();
-        }
+    public void UpdateGame() {
+        updateAnimationTick();
+        getImage();
+        setAnimation();
+        updatePo();
     }
 }

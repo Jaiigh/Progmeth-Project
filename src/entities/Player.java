@@ -1,5 +1,6 @@
 package entities;
 
+<<<<<<< HEAD
 import pane.GamePane;
 
 import java.awt.*;
@@ -499,3 +500,9 @@ public class Player extends Entity {
     }
 
 }
+=======
+public class Player {
+    public void update() {
+    }
+}
+>>>>>>> auming

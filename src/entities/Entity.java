@@ -1,5 +1,6 @@
 package entities;
 
+<<<<<<< HEAD
 import pane.GamePane;
 import pane.RootPane;
 
@@ -83,3 +84,12 @@ public abstract class Entity {
         aniIndex = 0;
     }
 }
+=======
+public abstract class Entity {
+    protected float x,y;
+    public Entity(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+>>>>>>> auming
