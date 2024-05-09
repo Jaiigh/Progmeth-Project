@@ -1,12 +1,14 @@
 package entities;
 
+import gamestates.Playing;
+import main.Game;
 import pane.GamePane;
 
 import java.awt.geom.Rectangle2D;
 
-import static Utils.Constant.Directions.LEFT;
-import static Utils.Constant.Directions.RIGHT;
-import static Utils.Constant.EnemyConstants.GetMaxHealth;
+import static Utils.Constant.ANI_SPEED;
+import static Utils.Constant.Directions.*;
+import static Utils.Constant.EnemyConstants.*;
 import static Utils.Constant.GRAVITY;
 import static Utils.Constant.PlayerConstants.IDLE;
 import static Utils.HelpMethods.*;
@@ -16,7 +18,7 @@ public abstract class Enemy extends Entity {
     protected boolean firstUpdate = true;
     protected int walkDir = LEFT;
     protected int tileY;
-    protected float attackDistance = GamePane.TILES_SIZE;
+    protected float attackDistance = Game.TILES_SIZE;
     protected boolean active = true;
     protected boolean attackChecked;
     protected int attackBoxOffsetX;
@@ -27,7 +29,7 @@ public abstract class Enemy extends Entity {
 
         maxHealth = GetMaxHealth(enemyType);
         currentHealth = maxHealth;
-        walkSpeed = GamePane.SCALE * 0.35f;
+        walkSpeed = Game.SCALE * 0.35f;
     }
 
     protected void updateAttackBox() {
@@ -45,8 +47,8 @@ public abstract class Enemy extends Entity {
     }
 
     protected void initAttackBox(int w, int h, int attackBoxOffsetX) {
-        attackBox = new Rectangle2D.Float(x, y, (int) (w * GamePane.SCALE), (int) (h * GamePane.SCALE));
-        this.attackBoxOffsetX = (int) (GamePane.SCALE * attackBoxOffsetX);
+        attackBox = new Rectangle2D.Float(x, y, (int) (w * Game.SCALE), (int) (h * Game.SCALE));
+        this.attackBoxOffsetX = (int) (Game.SCALE * attackBoxOffsetX);
     }
 
     protected void firstUpdateCheck(int[][] lvlData) {
@@ -55,14 +57,14 @@ public abstract class Enemy extends Entity {
         firstUpdate = false;
     }
 
-//    protected void inAirChecks(int[][] lvlData, Playing playing) {
-//        if (state != HIT && state != DEAD) {
-//            updateInAir(lvlData);
-//            playing.getObjectManager().checkSpikesTouched(this);
-//            if (IsEntityInWater(hitbox, lvlData))
-//                hurt(maxHealth);
-//        }
-//    }
+    protected void inAirChecks(int[][] lvlData, Playing playing) {
+        if (state != HIT && state != DEAD) {
+            updateInAir(lvlData);
+            playing.getObjectManager().checkSpikesTouched(this);
+            if (IsEntityInWater(hitbox, lvlData))
+                hurt(maxHealth);
+        }
+    }
 
     protected void updateInAir(int[][] lvlData) {
         if (CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
@@ -71,7 +73,7 @@ public abstract class Enemy extends Entity {
         } else {
             inAir = false;
             hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
-            tileY = (int) (hitbox.y / GamePane.TILES_SIZE);
+            tileY = (int) (hitbox.y / Game.TILES_SIZE);
         }
     }
 
@@ -92,15 +94,15 @@ public abstract class Enemy extends Entity {
         changeWalkDir();
     }
 
-//    protected void turnTowardsPlayer(Player player) {
-//        if (player.hitbox.x > hitbox.x)
-//            walkDir = RIGHT;
-//        else
-//            walkDir = LEFT;
-//    }
+    protected void turnTowardsPlayer(Player player) {
+        if (player.hitbox.x > hitbox.x)
+            walkDir = RIGHT;
+        else
+            walkDir = LEFT;
+    }
 
     protected boolean canSeePlayer(int[][] lvlData, Player player) {
-        int playerTileY = (int) (player.getHitbox().y / GamePane.TILES_SIZE);
+        int playerTileY = (int) (player.getHitbox().y / Game.TILES_SIZE);
         if (playerTileY == tileY)
             if (isPlayerInRange(player)) {
                 if (IsSightClear(lvlData, hitbox, player.hitbox, tileY))

@@ -2,6 +2,7 @@ package Utils;
 
 import java.awt.geom.Rectangle2D;
 
+import main.Game;
 import objects.Projectile;
 import pane.GamePane;
 
@@ -20,10 +21,10 @@ public class HelpMethods {
         int maxWidth = (int) (lvlData[0].length * (32 * 2f));
         if (x < 0 || x >= maxWidth)
             return true;
-        if (y < 0 || y >= GamePane.GAME_HEIGHT)
+        if (y < 0 || y >= Game.GAME_HEIGHT)
             return true;
-        float xIndex = x / GamePane.TILES_SIZE;
-        float yIndex = y / GamePane.TILES_SIZE;
+        float xIndex = x / Game.TILES_SIZE;
+        float yIndex = y / Game.TILES_SIZE;
 
         return IsTileSolid((int) xIndex, (int) yIndex, lvlData);
     }

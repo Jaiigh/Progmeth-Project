@@ -1,2 +1,4 @@
-package entities;public class Crabby {
+package entities;
+
+public class Crabby {
 }
