@@ -12,6 +12,15 @@ import static Utils.Constant.PlayerConstants.*;
 import static Utils.Constant.Directions.*;
 
 public class GamePane extends Pane {
+
+    public final static int TILES_DEFAULT_SIZE = 32;
+    public final static float SCALE = 2f;
+    public final static int TILES_IN_WIDTH = 26;
+    public final static int TILES_IN_HEIGHT = 14;
+    public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
+    public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
+    public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
+
     private double xPo = 100, yPo = 100;
     private Image img = new Image("player_sprites.png");
     private ImageView[][] animations;
