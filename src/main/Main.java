@@ -1,4 +1,12 @@
+package main;
 
+import javafx.application.Application;
+<<<<<<<<< Temporary merge branch 1
+
+public class Main {
+    public static void main(String[] args) {
+        Application.launch(GameWindow.class, args);
+=========
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import pane.RootPane;
@@ -16,5 +24,6 @@ public class Main extends Application {
         stage.setTitle("Let's Read");
         stage.setResizable(false);
         stage.show();
+>>>>>>>>> Temporary merge branch 2
     }
 }
