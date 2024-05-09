@@ -1,6 +1,11 @@
 package Utils;
 
+import pane.GamePane;
+
 public class Constant {
+
+    public static final float GRAVITY = 0.04f * GamePane.SCALE;
+    public static final int ANI_SPEED = 25;
     public static class Directions {
         public static final int LEFT = 0;
         public static final int UP = 1;
@@ -121,5 +126,14 @@ public class Constant {
                     return 0;
             }
         }
+    }
+
+    public static class Projectiles {
+        public static final int CANNON_BALL_DEFAULT_WIDTH = 15;
+        public static final int CANNON_BALL_DEFAULT_HEIGHT = 15;
+
+        public static final int CANNON_BALL_WIDTH = (int) (GamePane.SCALE * CANNON_BALL_DEFAULT_WIDTH);
+        public static final int CANNON_BALL_HEIGHT = (int) (GamePane.SCALE * CANNON_BALL_DEFAULT_HEIGHT);
+        public static final float SPEED = 0.75f * GamePane.SCALE;
     }
 }
