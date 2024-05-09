@@ -46,6 +46,7 @@ public class Constant {
         }
     }
 
+
     public static class EnemyConstants {
         public static final int CRABBY = 0;
         public static final int PINKSTAR = 1;
