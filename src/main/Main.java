@@ -13,7 +13,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        Scene scene = new Scene(RootPane.getRootPane(), 400, 400);
+        Scene scene = new Scene(RootPane.getRootPane());
         stage.setScene(scene);
         stage.setTitle("Let's Read");
         stage.setResizable(false);
