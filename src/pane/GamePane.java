@@ -12,9 +12,6 @@ import static Utils.Constant.Directions.*;
 
 public class GamePane extends Pane {
     private double xPo = 100, yPo = 100;
-    private int frames = 0;
-    private long lastCheck = System.currentTimeMillis();
-    private long lastFrame = System.nanoTime();
     private Image img = new Image("player_sprites.png");
     private ImageView[][] animations;
     private ImageView playerImg = new ImageView();
@@ -30,13 +27,6 @@ public class GamePane extends Pane {
 
         getAnimation();
         getImage();
-
-        new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                GameLoop(now);
-            }
-        }.start();
 
         this.setOnKeyPressed(e -> {
             switch (e.getCode()) {
@@ -146,25 +136,10 @@ public class GamePane extends Pane {
         }
     }
 
-    private void GameLoop(long now) {
-        double elapsedTime = (now - lastFrame) / 1_000_000_000.0;
-
-        if (elapsedTime >= 1.0 / 120) {
-            //update class in game loop
-            updateAnimationTick();
-            getImage();
-            setAnimation();
-            updatePo();
-            lastFrame = now;
-            frames++;
-        }
-
-        if (System.currentTimeMillis() - lastCheck >= 1000) {
-            System.out.println("FPS: " + frames);
-            System.out.println("XPO: " + playerImg.getLayoutX());
-            System.out.println("YPO: " + playerImg.getLayoutY());
-            frames = 0;
-            lastCheck = System.currentTimeMillis();
-        }
+    public void UpdateGame() {
+        updateAnimationTick();
+        getImage();
+        setAnimation();
+        updatePo();
     }
 }
