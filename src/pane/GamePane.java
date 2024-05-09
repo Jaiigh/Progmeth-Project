@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import main.Game;
 
 import static Utils.Constant.PlayerConstants.*;
 import static Utils.Constant.Directions.*;
@@ -20,9 +21,10 @@ public class GamePane extends Pane {
     private int playerDirection = -1;
     private boolean moving = false;
     public GamePane() {
-        this.setMinSize(1280, 800);
-        this.setPrefSize(1280, 800);
-        this.setMaxSize(1280, 800);
+        this.setMinSize(Game.GAME_WIDTH, Game.GAME_HEIGHT);
+        this.setPrefSize(Game.GAME_WIDTH, Game.GAME_HEIGHT);
+        this.setMaxSize(Game.GAME_WIDTH, Game.GAME_HEIGHT);
+//        System.out.println("size: " + Game.GAME_WIDTH + " x " + Game.GAME_HEIGHT);
         this.setFocusTraversable(true);
 
         getAnimation();
