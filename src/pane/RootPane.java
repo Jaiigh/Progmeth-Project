@@ -17,8 +17,7 @@ public class RootPane extends StackPane{
         this.setAlignment(Pos.CENTER);
         /////////////////////////
         Goto.setRootPane(this);
-        // temp
-        Goto.GamePage();
+        Goto.HomePage();
     }
 
     public static RootPane getRootPane() {

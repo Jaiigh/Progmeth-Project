@@ -3,6 +3,7 @@ package Utils;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import pane.GamePane;
+import pane.MenuPane;
 import pane.RootPane;
 
 public class Goto {
@@ -13,19 +14,18 @@ public class Goto {
     }
 
     public static void clear() {
-        if (rootPane.getChildren().size() <= 1) {
-            return;
-        }
-        rootPane.getChildren().remove(1, rootPane.getChildren().size());
+        rootPane.getChildren().clear();
+    }
+
+    public static void HomePage() {
+        clear();
+        MenuPane menuPane = new MenuPane();
+        rootPane.getChildren().addAll(menuPane);
     }
 
     public static void GamePage() {
         clear();
         GamePane gamePane = new GamePane();
         rootPane.getChildren().addAll(gamePane);
-    }
-
-    public static void gamepage() {
-
     }
 }
