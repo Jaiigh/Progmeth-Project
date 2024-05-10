@@ -71,6 +71,7 @@ public class Game {
         if (System.currentTimeMillis() - lastCheck >= 1000) {
             lastCheck = System.currentTimeMillis();
             System.out.println("FPS: " + frames + " | UPS: " + updates);
+            System.out.println("PlayerPo: " + gp.getGame().getPlayer().getPo());
             frames = 0;
             updates = 0;
         }

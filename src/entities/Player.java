@@ -36,8 +36,6 @@ public class Player extends Entity {
         playerImage = animations[playerAction][aniIndex];
         playerImage.setLayoutX(x);
         playerImage.setLayoutY(y);
-        playerImage.setScaleX(width/64);
-        playerImage.setLayoutY(height/40);
         gp.getChildren().add(playerImage);
     }
 
@@ -102,6 +100,10 @@ public class Player extends Entity {
             for (int i = 0; i < animations[j].length; i++) {
                 animations[j][i] = new ImageView(img);
                 animations[j][i].setViewport(new Rectangle2D(i*64, j*40, 64, 40));
+                animations[j][i].setLayoutX(x);
+                animations[j][i].setLayoutY(y);
+                animations[j][i].setScaleX(width/64);
+                animations[j][i].setScaleY(height/40);
             }
         }
     }
@@ -147,6 +149,11 @@ public class Player extends Entity {
 
     public void setDown(boolean down) {
         this.down = down;
+    }
+
+    //temp
+    public String getPo() {
+        return "X: " + x + " | Y: " + y;
     }
 
 }
