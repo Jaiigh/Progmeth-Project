@@ -10,6 +10,7 @@ import static utilz.Constants.PlayerConstants.*;
 
 public class Player extends Entity {
     private ImageView[][] animations;
+    private ImageView playerImage = new ImageView();
     private int aniTick, aniIndex, aniSpeed = 25;
     private int playerAction = IDLE;
     private boolean moving = false, attacking = false;
@@ -21,22 +22,23 @@ public class Player extends Entity {
         loadAnimations();
     }
 
-    public void update() {
+    public void update(GamePane gp) {
+        render(gp);
         updatePos();
         updateAnimationTick();
         setAnimation();
     }
 
     public void render(GamePane gp) {
-        ImageView imageView = animations[playerAction][aniIndex];
-        imageView.setLayoutX(x);
-        imageView.setLayoutY(y);
-        imageView.setScaleX(width/x);
-        imageView.setLayoutY(height/y);
-        if (gp.getChildren().contains(imageView)) {
-            gp.getChildren().remove(imageView);
+        if (gp.getChildren().contains(playerImage)) {
+            gp.getChildren().remove(playerImage);
         }
-        gp.getChildren().add(imageView);
+        playerImage = animations[playerAction][aniIndex];
+        playerImage.setLayoutX(x);
+        playerImage.setLayoutY(y);
+        playerImage.setScaleX(width/64);
+        playerImage.setLayoutY(height/40);
+        gp.getChildren().add(playerImage);
     }
 
     private void updateAnimationTick() {
@@ -94,15 +96,12 @@ public class Player extends Entity {
     }
 
     private void loadAnimations() {
-
         Image img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
-
         animations = new ImageView[9][6];
         for (int j = 0; j < animations.length; j++) {
             for (int i = 0; i < animations[j].length; i++) {
-                ImageView imageView = new ImageView(img);
-                imageView.setViewport(new Rectangle2D(i * 64, j * 40, 64, 40));
-                animations[j][i] = imageView;
+                animations[j][i] = new ImageView(img);
+                animations[j][i].setViewport(new Rectangle2D(i*64, j*40, 64, 40));
             }
         }
     }

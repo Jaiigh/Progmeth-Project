@@ -41,11 +41,11 @@ public class Game {
 
     public static void repaint(GamePane gp) {
         render(gp);
-        gp.UpdateGame();
+        gp.updateGame();
     }
 
-    public static void update() {
-        //player.update();
+    public static void update(GamePane gp) {
+        player.update(gp);
         levelManager.update();
     }
 
@@ -58,7 +58,7 @@ public class Game {
         previousTime = currentTime;
 
         if (deltaU >= 1) {
-            update();
+            update(gp);
             updates++;
             deltaU--;
         }
@@ -84,5 +84,9 @@ public class Game {
             }
         };
         gameLoop.start();
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

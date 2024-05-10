@@ -24,8 +24,8 @@ public class Goto {
 
     public static void GamePage() {
         clear();
-        GamePane gamePane = new GamePane();
         Game game = new Game();
+        GamePane gamePane = new GamePane(game);
         Game.initClasses(game);
         Game.startGameLoop(gamePane);
         rootPane.getChildren().addAll(gamePane);
