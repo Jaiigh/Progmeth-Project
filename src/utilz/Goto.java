@@ -1,4 +1,4 @@
-package Utils;
+package utilz;
 
 import main.Game;
 import pane.GamePane;

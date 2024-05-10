@@ -1,4 +1,7 @@
-package Utils;
+package utilz;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -47,20 +50,22 @@ public class LoadSave {
     public static final String WATER_BOTTOM = "water.png";
     public static final String SHIP = "ship.png";
 
-    public static BufferedImage GetSpriteAtlas(String fileName) {
-        BufferedImage img = null;
-        InputStream is = LoadSave.class.getResourceAsStream("/" + fileName);
+    public static Image GetSpriteAtlas(String pictureName) {
+        Image img = null;
         try {
-            img = ImageIO.read(is);
-
+            InputStream is = LoadSave.class.getResourceAsStream("/" + pictureName);
+            if (is != null) {
+                // Read the image using ImageIO
+                BufferedImage awtImage = ImageIO.read(is);
+                // Convert the AWT image to JavaFX image
+                img = SwingFXUtils.toFXImage(awtImage, null);
+                System.out.println("load successful");
+            } else {
+                // Handle case where resource stream is null
+                System.err.println("Resource not found");
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return img;
     }

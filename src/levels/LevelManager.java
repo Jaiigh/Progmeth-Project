@@ -1,6 +1,6 @@
 package levels;
 
-import Utils.LoadSave;
+import utilz.LoadSave;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

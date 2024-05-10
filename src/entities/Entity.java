@@ -1,14 +1,12 @@
 package entities;
 
 import main.Game;
-import pane.GamePane;
-import pane.RootPane;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-import static Utils.Constant.Directions.*;
-import static Utils.HelpMethods.CanMoveHere;
+import static utilz.Constants.Directions.*;
+//import static utilz.HelpMethods.CanMoveHere;
 
 public abstract class Entity {
     protected float x, y;
@@ -51,16 +49,16 @@ public abstract class Entity {
         }
     }
 
-    protected void pushBack(int pushBackDir, int[][] lvlData, float speedMulti) {
-        float xSpeed = 0;
-        if (pushBackDir == LEFT)
-            xSpeed = -walkSpeed;
-        else
-            xSpeed = walkSpeed;
-
-        if (CanMoveHere(hitbox.x + xSpeed * speedMulti, hitbox.y, hitbox.width, hitbox.height, lvlData))
-            hitbox.x += xSpeed * speedMulti;
-    }
+//    protected void pushBack(int pushBackDir, int[][] lvlData, float speedMulti) {
+//        float xSpeed = 0;
+//        if (pushBackDir == LEFT)
+//            xSpeed = -walkSpeed;
+//        else
+//            xSpeed = walkSpeed;
+//
+//        if (CanMoveHere(hitbox.x + xSpeed * speedMulti, hitbox.y, hitbox.width, hitbox.height, lvlData))
+//            hitbox.x += xSpeed * speedMulti;
+//    }
 
     protected void drawAttackBox(Graphics g, int xLvlOffset) {
         g.setColor(Color.red);

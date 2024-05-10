@@ -30,12 +30,12 @@ public class Game {
     private static LevelManager levelManager;
 
     public static void initClasses(Game instance) {
-        player = new Player();
+        player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
         levelManager = new LevelManager(instance);
     }
 
     public static void render(GamePane gp) {
-        //player.render(g);
+        player.render(gp);
         levelManager.draw(gp);
     }
 

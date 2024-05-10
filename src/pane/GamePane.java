@@ -1,6 +1,5 @@
 package pane;
 
-import javafx.animation.AnimationTimer;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,8 +7,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import main.Game;
 
-import static Utils.Constant.PlayerConstants.*;
-import static Utils.Constant.Directions.*;
+import static utilz.Constants.PlayerConstants.*;
+import static utilz.Constants.Directions.*;
 
 public class GamePane extends Pane {
     private double xPo = 100, yPo = 100;

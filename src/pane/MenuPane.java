@@ -1,6 +1,6 @@
 package pane;
 
-import Utils.Goto;
+import utilz.Goto;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
