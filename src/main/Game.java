@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import levels.LevelManager;
 import pane.GamePane;
+import utilz.LoadSave;
 
 public class Game {
     //constant
@@ -31,8 +32,9 @@ public class Game {
     private static LevelManager levelManager;
 
     public static void initClasses(Game instance) {
-        player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
         levelManager = new LevelManager(instance);
+        player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
+        player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
     }
 
     public static void render(GamePane gp) {

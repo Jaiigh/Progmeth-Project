@@ -1,29 +1,15 @@
 package entities;
 
-import main.Game;
-
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
-
-import static utilz.Constants.Directions.*;
-//import static utilz.HelpMethods.CanMoveHere;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public abstract class Entity {
+
     protected float x, y;
     protected int width, height;
-    protected Rectangle2D.Float hitbox;
-    protected int aniTick, aniIndex;
-    protected int state;
-    protected float airSpeed;
-    protected boolean inAir = false;
-    protected int maxHealth;
-    protected int currentHealth;
-    protected Rectangle2D.Float attackBox;
-    protected float walkSpeed;
-
-    protected int pushBackDir;
-    protected float pushDrawOffset;
-    protected int pushBackOffsetDir = UP;
+    protected Rectangle2D hitbox;
 
     public Entity(float x, float y, int width, int height) {
         this.x = x;
@@ -32,64 +18,23 @@ public abstract class Entity {
         this.height = height;
     }
 
-    public void updatePushBackDrawOffset() {
-        float speed = 0.93f;
-        float limit = -30f;
-
-        if (pushBackOffsetDir == UP) {
-            pushDrawOffset -= speed;
-            if (pushDrawOffset <= limit) {
-                pushBackOffsetDir = DOWN;
-            } else {
-                pushDrawOffset += speed;
-                if (pushDrawOffset >= 0) {
-                    pushDrawOffset = 0;
-                }
-            }
-        }
+    protected void drawHitbox(GraphicsContext gc) {
+        // for debugging the hitbox
+        gc.setStroke(Color.PINK);
+        gc.strokeRect((int) hitbox.getMinX(), (int) hitbox.getMinY(), (int) hitbox.getWidth(), (int) hitbox.getHeight());
     }
 
-//    protected void pushBack(int pushBackDir, int[][] lvlData, float speedMulti) {
-//        float xSpeed = 0;
-//        if (pushBackDir == LEFT)
-//            xSpeed = -walkSpeed;
-//        else
-//            xSpeed = walkSpeed;
-//
-//        if (CanMoveHere(hitbox.x + xSpeed * speedMulti, hitbox.y, hitbox.width, hitbox.height, lvlData))
-//            hitbox.x += xSpeed * speedMulti;
+    protected void initHitbox(float x, float y, float width, float height) {
+        hitbox = new Rectangle2D(x, y, width, height);
+    }
+
+//    protected void updateHitbox() {
+//        hitbox.setX((int) x);
+//        hitbox.setY((int) y);
 //    }
 
-    protected void drawAttackBox(Graphics g, int xLvlOffset) {
-        g.setColor(Color.red);
-        g.drawRect((int) (attackBox.x - xLvlOffset), (int) attackBox.y, (int) attackBox.width, (int) attackBox.height
-        );
-    }
-
-    protected void drawHitBox(Graphics g, int xLvlOffset) {
-        g.setColor(Color.PINK);
-        g.drawRect((int) hitbox.x - xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
-    }
-
-    protected void initHitbox(int width, int height) {
-        hitbox = new Rectangle2D.Float(x,y,(int) (width * Game.SCALE), (int) (height * Game.SCALE));
-    }
-
-    public Rectangle2D.Float getHitbox() {
+    public Rectangle2D getHitbox() {
         return hitbox;
     }
 
-    public int getState() {
-        return state;
-    }
-
-    public int getAniIndex() {
-        return aniIndex;
-    }
-
-    protected void newState(int state) {
-        this.state = state;
-        aniTick = 0;
-        aniIndex = 0;
-    }
 }

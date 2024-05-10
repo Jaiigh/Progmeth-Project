@@ -34,8 +34,8 @@ public class LevelManager {
     }
 
     public void draw(GraphicsContext gc) {
-        for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) { // j < Game.TILES_IN_HEIGHT
-            for (int i = 0; i < Game.TILES_IN_WIDTH; i++) { // i < Game.TILES_IN_WIDTH
+        for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
+            for (int i = 0; i < Game.TILES_IN_WIDTH; i++) {
                 int index = levelOne.getSpriteIndex(i, j);
                 ImageView imageView = levelSprite[index];
                 gc.drawImage(imageView.getImage(),
@@ -47,16 +47,14 @@ public class LevelManager {
                         Game.TILES_SIZE*j,
                         Game.TILES_SIZE,
                         Game.TILES_SIZE);
-//                ImageView levelImage = new ImageView(levelSprite[index]);
-//                levelImage.setLayoutX(i*32);
-//                levelImage.setLayoutY(j*32);
-//                levelImage.setScaleX(1); // Game.TILES_SIZE
-//                levelImage.setLayoutY(1); // Game.TILES_SIZE
-//                gp.getChildren().add(levelImage);
             }
         }
     }
 
     public void update() {
+    }
+
+    public Level getCurrentLevel() {
+        return levelOne;
     }
 }

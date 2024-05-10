@@ -9,6 +9,7 @@ import main.Game;
 import pane.GamePane;
 import utilz.LoadSave;
 import static utilz.Constants.PlayerConstants.*;
+import static utilz.HelpMethods.CanMoveHere;
 
 public class Player extends Entity {
     private ImageView[][] animations;
@@ -18,10 +19,14 @@ public class Player extends Entity {
     private boolean moving = false, attacking = false;
     private boolean left, up, right, down;
     private float playerSpeed = 2.0f;
+    private int[][] lvlData;
+    private float xDrawOffSet = 21 * Game.SCALE;
+    private float yDrawOffSet = 4 * Game.SCALE;
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
+        initHitbox(x, y, 20*Game.SCALE, 28*Game.SCALE);
     }
 
     public void update(GamePane gp) {
@@ -32,30 +37,26 @@ public class Player extends Entity {
     }
 
     public void render(GraphicsContext gc) {
-//        if (gp.getChildren().contains(playerImage)) {
-//            gp.getChildren().remove(playerImage);
-//        }
         playerImage = animations[playerAction][aniIndex];
-        if (x >= 1150) {
-            x = 1150;
-        } else if (x <= 0) {
-            x = 0;
-        }
-//        playerImage.setLayoutX(x);
-        if (y >= Game.GAME_HEIGHT) {
-            y = Game.GAME_HEIGHT;
-        } else if (y <= 0) {
-            y = 0;
-        }
-//        playerImage.setLayoutY(y);
-//        gp.getChildren().add(playerImage);
-//        gc.clearRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
+//        if (x >= 1150) {
+//            x = 1150;
+//        } else if (x <= 0) {
+//            x = 0;
+//        }
+//        if (y >= Game.GAME_HEIGHT) {
+//            y = Game.GAME_HEIGHT;
+//        } else if (y <= 0) {
+//            y = 0;
+//        }
         gc.drawImage(playerImage.getImage(),
                 playerImage.getViewport().getMinX(),
                 playerImage.getViewport().getMinY(),
                 playerImage.getViewport().getWidth(),
                 playerImage.getViewport().getHeight(),
-                x, y, width, height);
+                (int) (hitbox.getMinX() - xDrawOffSet),
+                (int) (hitbox.getMinY() - yDrawOffSet),
+                width, height);
+        drawHitbox(gc);
     }
 
     private void updateAnimationTick() {
@@ -93,20 +94,34 @@ public class Player extends Entity {
 
     private void updatePos() {
         moving = false;
+        if (!left && !right && !up && !down) {
+            return;
+        }
+        float xSpeed = 0, ySpeed = 0;
 
         if (left && !right) {
-            x -= playerSpeed;
-            moving = true;
+            xSpeed = -playerSpeed;
         } else if (right && !left) {
-            x += playerSpeed;
-            moving = true;
+            xSpeed = playerSpeed;
         }
 
         if (up && !down) {
-            y -= playerSpeed;
-            moving = true;
+            ySpeed = -playerSpeed;
         } else if (down && !up) {
-            y += playerSpeed;
+            ySpeed = playerSpeed;
+        }
+
+//        if (CanMoveHere(x+xSpeed, y+ySpeed, width, height, lvlData)) {
+//            this.x += xSpeed;
+//            this.y += ySpeed;
+//            moving = true;
+//        }
+
+        if (CanMoveHere((float) (hitbox.getMinX()+xSpeed), (float) (hitbox.getMinY()+ySpeed), (float) hitbox.getWidth(), (float) hitbox.getHeight(), lvlData)) {
+            double newX = hitbox.getMinX() + xSpeed;
+            double newY = hitbox.getMinY() + ySpeed;
+
+            hitbox = new Rectangle2D(newX, newY, hitbox.getWidth(), hitbox.getHeight());
             moving = true;
         }
     }
@@ -120,6 +135,10 @@ public class Player extends Entity {
                 animations[j][i].setViewport(new Rectangle2D(i*64, j*40, 64, 40));
             }
         }
+    }
+
+    public void loadLvlData(int[][] lvlData) {
+        this.lvlData = lvlData;
     }
 
     public void resetDirBooleans() {
