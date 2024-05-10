@@ -1,6 +1,7 @@
 package pane;
 
 import inputs.KeyboardInputs;
+import inputs.MouseInputs;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,6 +21,7 @@ public class GamePane extends Pane {
         this.setFocusTraversable(true);
         this.game = game;
         new KeyboardInputs(this);
+        new MouseInputs(this);
     }
 
     public void updateGame() {

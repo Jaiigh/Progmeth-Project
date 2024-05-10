@@ -4,6 +4,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import main.Game;
 import pane.GamePane;
 import utilz.LoadSave;
 import static utilz.Constants.PlayerConstants.*;
@@ -11,7 +12,7 @@ import static utilz.Constants.PlayerConstants.*;
 public class Player extends Entity {
     private ImageView[][] animations;
     private ImageView playerImage = new ImageView();
-    private int aniTick, aniIndex, aniSpeed = 25;
+    private int aniTick, aniIndex, aniSpeed = 10;
     private int playerAction = IDLE;
     private boolean moving = false, attacking = false;
     private boolean left, up, right, down;
@@ -34,7 +35,17 @@ public class Player extends Entity {
             gp.getChildren().remove(playerImage);
         }
         playerImage = animations[playerAction][aniIndex];
+        if (x >= 1150) {
+            x = 1150;
+        } else if (x <= 0) {
+            x = 0;
+        }
         playerImage.setLayoutX(x);
+        if (y >= Game.GAME_HEIGHT) {
+            y = Game.GAME_HEIGHT;
+        } else if (y <= 0) {
+            y = 0;
+        }
         playerImage.setLayoutY(y);
         gp.getChildren().add(playerImage);
     }
@@ -63,7 +74,6 @@ public class Player extends Entity {
 
         if (attacking)
             playerAction = ATTACK_1;
-
         if (startAni != playerAction)
             resetAniTick();
     }
@@ -152,8 +162,20 @@ public class Player extends Entity {
     }
 
     //temp
-    public String getPo() {
-        return "X: " + x + " | Y: " + y;
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
 }
