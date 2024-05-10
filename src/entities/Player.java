@@ -17,11 +17,18 @@ public class Player extends Entity {
     private int aniTick, aniIndex, aniSpeed = 10;
     private int playerAction = IDLE;
     private boolean moving = false, attacking = false;
-    private boolean left, up, right, down;
+    private boolean left, up, right, down, jump;
     private float playerSpeed = 2.0f;
     private int[][] lvlData;
     private float xDrawOffSet = 21 * Game.SCALE;
     private float yDrawOffSet = 4 * Game.SCALE;
+
+    // jumping & gravity
+    private float airSpeed = 0f;
+    private float gravity = 0.04f * Game.SCALE;
+    private float jumpSpeed = -2.25f * Game.SCALE;
+    private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
+    private boolean inAir = false;
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -38,16 +45,6 @@ public class Player extends Entity {
 
     public void render(GraphicsContext gc) {
         playerImage = animations[playerAction][aniIndex];
-//        if (x >= 1150) {
-//            x = 1150;
-//        } else if (x <= 0) {
-//            x = 0;
-//        }
-//        if (y >= Game.GAME_HEIGHT) {
-//            y = Game.GAME_HEIGHT;
-//        } else if (y <= 0) {
-//            y = 0;
-//        }
         gc.drawImage(playerImage.getImage(),
                 playerImage.getViewport().getMinX(),
                 playerImage.getViewport().getMinY(),
@@ -68,9 +65,7 @@ public class Player extends Entity {
                 aniIndex = 0;
                 attacking = false;
             }
-
         }
-
     }
 
     private void setAnimation() {
@@ -94,10 +89,10 @@ public class Player extends Entity {
 
     private void updatePos() {
         moving = false;
-        if (!left && !right && !up && !down) {
+        if (!left && !right && !inAir) {
             return;
         }
-        float xSpeed = 0, ySpeed = 0;
+        float xSpeed = 0, ySpeed = 0; // ySpeed = 0
 
         if (left && !right) {
             xSpeed = -playerSpeed;
