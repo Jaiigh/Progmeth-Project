@@ -1,6 +1,7 @@
 package entities;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -24,30 +25,37 @@ public class Player extends Entity {
     }
 
     public void update(GamePane gp) {
-        render(gp);
+        render(gp.getGraphicsContext());
         updatePos();
         updateAnimationTick();
         setAnimation();
     }
 
-    public void render(GamePane gp) {
-        if (gp.getChildren().contains(playerImage)) {
-            gp.getChildren().remove(playerImage);
-        }
+    public void render(GraphicsContext gc) {
+//        if (gp.getChildren().contains(playerImage)) {
+//            gp.getChildren().remove(playerImage);
+//        }
         playerImage = animations[playerAction][aniIndex];
         if (x >= 1150) {
             x = 1150;
         } else if (x <= 0) {
             x = 0;
         }
-        playerImage.setLayoutX(x);
+//        playerImage.setLayoutX(x);
         if (y >= Game.GAME_HEIGHT) {
             y = Game.GAME_HEIGHT;
         } else if (y <= 0) {
             y = 0;
         }
-        playerImage.setLayoutY(y);
-        gp.getChildren().add(playerImage);
+//        playerImage.setLayoutY(y);
+//        gp.getChildren().add(playerImage);
+//        gc.clearRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
+        gc.drawImage(playerImage.getImage(),
+                playerImage.getViewport().getMinX(),
+                playerImage.getViewport().getMinY(),
+                playerImage.getViewport().getWidth(),
+                playerImage.getViewport().getHeight(),
+                x, y, width, height);
     }
 
     private void updateAnimationTick() {
@@ -110,10 +118,6 @@ public class Player extends Entity {
             for (int i = 0; i < animations[j].length; i++) {
                 animations[j][i] = new ImageView(img);
                 animations[j][i].setViewport(new Rectangle2D(i*64, j*40, 64, 40));
-                animations[j][i].setLayoutX(x);
-                animations[j][i].setLayoutY(y);
-                animations[j][i].setScaleX(width/64);
-                animations[j][i].setScaleY(height/40);
             }
         }
     }

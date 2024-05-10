@@ -2,13 +2,14 @@ package utilz;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.paint.Color;
+import main.Game;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
 
@@ -16,6 +17,7 @@ public class LoadSave {
 
     public static final String PLAYER_ATLAS = "player_sprites.png";
     public static final String LEVEL_ATLAS = "outside_sprites.png";
+    public static final String LEVEL_ONE_DATA = "level_one_data.png";
     public static final String MENU_BUTTONS = "button_atlas.png";
     public static final String MENU_BACKGROUND = "menu_background.png";
     public static final String PAUSE_BACKGROUND = "pause_menu.png";
@@ -70,36 +72,69 @@ public class LoadSave {
         return img;
     }
 
-    public static BufferedImage[] GetAllLevels() {
-        URL url = LoadSave.class.getResource("/lvls");
-        File file = null;
+//    public static BufferedImage[] GetAllLevels() {
+//        URL url = LoadSave.class.getResource("/lvls");
+//        File file = null;
+//
+//        try {
+//            file = new File(url.toURI());
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//
+//        File[] files = file.listFiles();
+//        File[] filesSorted = new File[files.length];
+//
+//        for (int i = 0; i < filesSorted.length; i++)
+//            for (int j = 0; j < files.length; j++) {
+//                if (files[j].getName().equals((i + 1) + ".png"))
+//                    filesSorted[i] = files[j];
+//
+//            }
+//
+//        BufferedImage[] imgs = new BufferedImage[filesSorted.length];
+//
+//        for (int i = 0; i < imgs.length; i++)
+//            try {
+//                imgs[i] = ImageIO.read(filesSorted[i]);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//        return imgs;
+//    }
 
-        try {
-            file = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+    public static int[][] GetLevelData() {
+        int[][] lvlData = new int[Game.TILES_IN_HEIGHT][Game.TILES_IN_WIDTH];
+        Image img = GetSpriteAtlas(LEVEL_ONE_DATA);
+
+//        for (int j = 0; j < img.getHeight(); j++) {
+//            for (int i = 0; i < img.getWidth(); i++) {
+//                Color color = img.getPixelReader().getColor(i, j);
+//                int value = (int) color.getRed();
+//                if (value >= 48) {
+//                    value = 0;
+//                }
+//                lvlData[j][i] = value;
+//            }
+//        }
+        int imageWidth = (int) img.getWidth();
+        int imageHeight = (int) img.getHeight();
+
+        PixelReader pixelReader = img.getPixelReader();
+
+        for (int j = 0; j < imageHeight && j < Game.TILES_IN_HEIGHT; j++) {
+            for (int i = 0; i < imageWidth && i < Game.TILES_IN_WIDTH; i++) {
+                Color color = pixelReader.getColor(i, j);
+                int value = (int) (color.getRed() * 255); // Scale to 0-255 range
+                if (value >= 48) {
+                    value = 0;
+                }
+                lvlData[j][i] = value;
+            }
         }
 
-        File[] files = file.listFiles();
-        File[] filesSorted = new File[files.length];
-
-        for (int i = 0; i < filesSorted.length; i++)
-            for (int j = 0; j < files.length; j++) {
-                if (files[j].getName().equals((i + 1) + ".png"))
-                    filesSorted[i] = files[j];
-
-            }
-
-        BufferedImage[] imgs = new BufferedImage[filesSorted.length];
-
-        for (int i = 0; i < imgs.length; i++)
-            try {
-                imgs[i] = ImageIO.read(filesSorted[i]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        return imgs;
+        return lvlData;
     }
 
 }

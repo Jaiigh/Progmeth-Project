@@ -2,6 +2,7 @@ package main;
 
 import entities.Player;
 import javafx.animation.AnimationTimer;
+import javafx.scene.canvas.GraphicsContext;
 import levels.LevelManager;
 import pane.GamePane;
 
@@ -35,8 +36,10 @@ public class Game {
     }
 
     public static void render(GamePane gp) {
-        player.render(gp);
-        levelManager.draw(gp);
+//        levelManager.draw(gp);
+        gp.getGraphicsContext().clearRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
+        levelManager.draw(gp.getGraphicsContext());
+        player.render(gp.getGraphicsContext());
     }
 
     public static void repaint(GamePane gp) {
