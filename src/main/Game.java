@@ -8,6 +8,8 @@ import pane.GamePane;
 import utilz.LoadSave;
 
 public class Game {
+    private GamePane gp;
+
     //constant
     public final static int TILES_DEFAULT_SIZE = 32;
     public final static float SCALE = 1.5f;
@@ -31,8 +33,14 @@ public class Game {
     private static Player player;
     private static LevelManager levelManager;
 
-    public static void initClasses(Game instance) {
-        levelManager = new LevelManager(instance);
+    public Game() {
+        this.gp = new GamePane(this);
+        initClasses();
+        startGameLoop(gp);
+    }
+
+    private void initClasses() {
+        levelManager = new LevelManager(this);
         player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
     }
@@ -82,7 +90,7 @@ public class Game {
         }
     }
 
-    public static void startGameLoop(GamePane pane) {
+    private static void startGameLoop(GamePane pane) {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -94,5 +102,9 @@ public class Game {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public GamePane getGamePane() {
+        return gp;
     }
 }

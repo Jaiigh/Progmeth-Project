@@ -89,7 +89,7 @@ public class Player extends Entity {
 
     private void updatePos() {
         moving = false;
-        if (!left && !right && !inAir) {
+        if (!left && !right && !up && !down) {
             return;
         }
         float xSpeed = 0, ySpeed = 0; // ySpeed = 0
