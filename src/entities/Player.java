@@ -4,6 +4,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import static utilz.HelpMethods.*;
 
 import main.Game;
 import pane.GamePane;
@@ -34,6 +35,7 @@ public class Player extends Entity {
         super(x, y, width, height);
         loadAnimations();
         initHitbox(x, y, 20*Game.SCALE, 28*Game.SCALE);
+
     }
 
     public void update(GamePane gp) {
@@ -76,6 +78,14 @@ public class Player extends Entity {
         else
             playerAction = IDLE;
 
+        if (inAir) {
+            if (airSpeed < 0) {
+                playerAction = JUMP;
+            } else {
+                playerAction = FALLING;
+            }
+        }
+
         if (attacking)
             playerAction = ATTACK_1;
         if (startAni != playerAction)
@@ -89,22 +99,54 @@ public class Player extends Entity {
 
     private void updatePos() {
         moving = false;
-        if (!left && !right && !inAir) {
+
+        if (jump) {
+            jump();
+        }
+        if (!left && !right && !up && !down) {
             return;
         }
-        float xSpeed = 0, ySpeed = 0; // ySpeed = 0
 
-        if (left && !right) {
-            xSpeed = -playerSpeed;
-        } else if (right && !left) {
-            xSpeed = playerSpeed;
+        float xSpeed = 0;
+
+        if (left) {
+            xSpeed -= playerSpeed;
+        } else if (right) {
+            xSpeed += playerSpeed;
         }
 
-        if (up && !down) {
-            ySpeed = -playerSpeed;
-        } else if (down && !up) {
-            ySpeed = playerSpeed;
+        if (!inAir) {
+            if (!IsEntityOnFloor(hitbox, lvlData)) {
+                inAir = true;
+            }
         }
+
+        if (inAir) {
+            if (CanMoveHere((float) hitbox.getMinX(), (float) hitbox.getMinY() + airSpeed, (float) hitbox.getWidth() , (float) hitbox.getHeight(), lvlData)) {
+                double newY = hitbox.getMinY() + airSpeed;
+                hitbox = new Rectangle2D(hitbox.getMinX(), newY, hitbox.getWidth(), hitbox.getHeight());
+                airSpeed += gravity;
+                updateXPos(xSpeed);
+
+
+            } else {
+                double newY = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
+
+                hitbox = new Rectangle2D(hitbox.getMinX(), newY, hitbox.getWidth(), hitbox.getHeight());
+
+                if (airSpeed > 0) {
+                    resetInAir();
+                } else {
+                    airSpeed = fallSpeedAfterCollision;
+                }
+
+                updateXPos(xSpeed);
+            }
+        } else {
+            updateXPos(xSpeed);
+        }
+
+        moving = true;
 
 //        if (CanMoveHere(x+xSpeed, y+ySpeed, width, height, lvlData)) {
 //            this.x += xSpeed;
@@ -112,12 +154,35 @@ public class Player extends Entity {
 //            moving = true;
 //        }
 
-        if (CanMoveHere((float) (hitbox.getMinX()+xSpeed), (float) (hitbox.getMinY()+ySpeed), (float) hitbox.getWidth(), (float) hitbox.getHeight(), lvlData)) {
-            double newX = hitbox.getMinX() + xSpeed;
-            double newY = hitbox.getMinY() + ySpeed;
+//        if (CanMoveHere((float) (hitbox.getMinX()+xSpeed), (float) (hitbox.getMinY()+ySpeed), (float) hitbox.getWidth(), (float) hitbox.getHeight(), lvlData)) {
+//            double newX = hitbox.getMinX() + xSpeed;
+//            double newY = hitbox.getMinY() + ySpeed;
+//
+//            hitbox = new Rectangle2D(newX, newY, hitbox.getWidth(), hitbox.getHeight());
+//            moving = true;
+//        }
+    }
 
-            hitbox = new Rectangle2D(newX, newY, hitbox.getWidth(), hitbox.getHeight());
-            moving = true;
+    private void jump() {
+        if (inAir) {
+            return;
+        }
+        inAir = true;
+        airSpeed = jumpSpeed;
+    }
+
+    private void resetInAir() {
+        inAir = false;
+        airSpeed = 0;
+    }
+
+    private void updateXPos(Float xSpeed) {
+        if (CanMoveHere((float) (hitbox.getMinX()+xSpeed), (float) (hitbox.getMinY()), (float) hitbox.getWidth(), (float) hitbox.getHeight(), lvlData)) {
+            double newX = hitbox.getMinX() + xSpeed;
+            hitbox = new Rectangle2D(newX, hitbox.getMinY(), hitbox.getWidth(), hitbox.getHeight());
+        } else {
+            double newX = GetEntityXPosNextToWall(hitbox, xSpeed);
+            hitbox = new Rectangle2D(newX, hitbox.getMaxY(), hitbox.getWidth(), hitbox.getHeight());
         }
     }
 
@@ -134,6 +199,9 @@ public class Player extends Entity {
 
     public void loadLvlData(int[][] lvlData) {
         this.lvlData = lvlData;
+        if (!IsEntityOnFloor(hitbox, lvlData)) {
+            inAir = true;
+        }
     }
 
     public void resetDirBooleans() {
@@ -196,4 +264,7 @@ public class Player extends Entity {
         return height;
     }
 
+    public void setJump(boolean jump) {
+        this.jump = jump;
+    }
 }

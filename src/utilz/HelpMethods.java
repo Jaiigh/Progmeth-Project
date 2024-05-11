@@ -1,5 +1,6 @@
 package utilz;
 
+import javafx.geometry.Rectangle2D;
 import main.Game;
 
 public class HelpMethods {
@@ -33,5 +34,36 @@ public class HelpMethods {
             return true;
         }
         return false;
+    }
+
+    public static float GetEntityXPosNextToWall(Rectangle2D hitbox, float xSpeed) {
+        int currentTile = (int) (hitbox.getMinX() / Game.TILES_SIZE);
+        if (xSpeed > 0) {
+            int tileXPos = currentTile * Game.TILES_SIZE;
+            int xOffset = (int) (Game.TILES_SIZE - hitbox.getWidth());
+            return tileXPos + xOffset - 1;
+        } else {
+            return currentTile * Game.TILES_SIZE;
+        }
+    }
+
+    public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D hitbox, float airSpeed) {
+        int currentTile = (int) (hitbox.getMinY() / Game.TILES_SIZE);
+        if (airSpeed > 0) {
+            int tileYPos = currentTile * Game.TILES_SIZE;
+            int yOffset = (int) (Game.TILES_SIZE - hitbox.getHeight());
+            return tileYPos + yOffset - 1;
+        } else {
+            return currentTile * Game.TILES_SIZE;
+        }
+    }
+
+    public static boolean IsEntityOnFloor(Rectangle2D hitbox, int[][] lvlData) {
+        if (!IsSolid((float) hitbox.getMinX(), (float) (hitbox.getMinY() + hitbox.getHeight() + 1), lvlData)) {
+            if (!IsSolid((float) (hitbox.getMinX() + hitbox.getWidth()), (float) (hitbox.getMinY() + hitbox.getHeight() + 1), lvlData)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
